@@ -82,10 +82,10 @@ selected_region = st.selectbox("시각화할 지역을 선택하세요:", region
 #     st.cache_data.clear()
 #     st.session_state["cache_cleared"] = True
 
-# 버튼 클릭시 캐시 제거 후 재시작
-if st.button("🔄 캐시 초기화 및 새로고침"):
-    st.cache_data.clear()
-    st.rerun()
+# # 버튼 클릭시 캐시 제거 후 재시작
+# if st.button("🔄 캐시 초기화 및 새로고침(관리자용)"):
+#     st.cache_data.clear()
+#     st.rerun()
 
 fig1, ax1 = plt.subplots(figsize=(10, 6))
 
