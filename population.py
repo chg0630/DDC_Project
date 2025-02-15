@@ -16,6 +16,7 @@ def fetch_github_end_date(current_quarter):
     if response.status_code == 200:
         match = re.search(r"end_date\s*=\s*['"](\d+)['"]", response.text)
         if match:
+            st.session_state["end_date"] = match.group(1) 
             return match.group(1)
     return None  # 실패 시 None 반환
 
