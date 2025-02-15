@@ -71,9 +71,15 @@ def group_age(row):
 
 df_filtered['연령그룹'] = df_filtered['연령별'].apply(group_age)
 
-if "cache_cleared" not in st.session_state:
+# # 앱 실행시 자동 캐시 제거 후 재시작
+# if "cache_cleared" not in st.session_state:
+#     st.cache_data.clear()
+#     st.session_state["cache_cleared"] = True
+
+# 버튼 클릭시 캐시 제거 후 재시작
+if st.button("🔄 캐시 초기화 및 새로고침"):
     st.cache_data.clear()
-    st.session_state["cache_cleared"] = True
+    st.rerun()
 
 st.title("지역별 인구수 시각화")
 st.write("KOSIS 데이터를 활용하여 특정 지역의 인구 변화를 시각화합니다.")
