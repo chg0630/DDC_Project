@@ -10,9 +10,10 @@ import matplotlib.font_manager as fm
 font_path = os.path.join(os.path.dirname(__file__), 'NanumGothic.ttf')
 fontprop = fm.FontProperties(fname=font_path, size=10)
 
+# , "41630", "41650", "41800", "41820", "41150", "41280", "41310", "41360", "41480"
 @st.cache_data
 def fetch_population_data():
-    regions = ["41250", "41630", "41650", "41800", "41820", "41150", "41280", "41310", "41360", "41480"]
+    regions = ["41250"]
     start_date = '200801'
     end_date = '202501'
     monthly_list = pd.date_range(start="2008-01", end="2025-01", freq='M').strftime('%Y%m').tolist()
@@ -80,6 +81,11 @@ selected_region = st.selectbox("시각화할 지역을 선택하세요:", region
 if "cache_cleared" not in st.session_state:
     st.cache_data.clear()
     st.session_state["cache_cleared"] = True
+
+# 버튼 클릭 시 캐시 삭제 및 페이지 새로고침
+if st.button("🔄 캐시 초기화 및 새로고침"):
+    st.cache_data.clear()
+    st.rerun()
 
 fig1, ax1 = plt.subplots(figsize=(10, 6))
 
