@@ -106,3 +106,26 @@ ax1.set_xticks(tick_positions)
 ax1.set_xticklabels(tick_positions, rotation=0, fontproperties=fontprop)
 
 st.pyplot(fig1)
+
+# 두 번째 그래프: 전체 인구 변화 (월별 전체 합계)
+fig2, ax2 = plt.subplots(figsize=(10, 6))
+
+# 연도별 인구수 합계 계산
+df_total_population = df_region.groupby('연도')['인구수'].sum().reset_index()
+
+# 전체 인구 변화를 선 그래프로 표시
+ax2.plot(df_total_population['연도'], df_total_population['인구수'], marker='o', linestyle='-', markersize=3, linewidth=1.5)
+ax2.set_title(f"{selected_region}의 인구 변화", fontproperties=fontprop, fontsize=16)
+ax2.set_xlabel('YearMonth', fontproperties=fontprop, fontsize=12)
+ax2.set_ylabel('Population', fontproperties=fontprop, fontsize=12)
+
+# X축 레이블 간격 설정 (3년 간격 + 데이터의 마지막 날짜 추가)
+unique_years = df_total_population['연도'].unique()
+tick_positions = list(unique_years[::36])
+if tick_positions[-1] != unique_years[-1]:
+    tick_positions.append(unique_years[-1])
+ax2.set_xticks(tick_positions)
+ax2.set_xticklabels(tick_positions, rotation=0, fontsize=8, fontproperties=fontprop)
+
+# Streamlit을 통한 두 번째 그래프 출력
+st.pyplot(fig2)
