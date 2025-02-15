@@ -6,6 +6,35 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
+# GitHub에서 최신 population.py 코드 가져오기
+GITHUB_RAW_URL = "https://raw.githubusercontent.com/chg0630/DDC_Project/main/population.py"
+
+@st.cache_data
+def fetch_github_end_date(current_quarter):
+    response = requests.get(GITHUB_RAW_URL)
+    if response.status_code == 200:
+        match = re.search(r"end_date\s*=\s*['"](\d+)['"]", response.text)
+        if match:
+            return match.group(1)
+    return None  # 실패 시 None 반환
+
+# 현재 연도와 분기 계산
+today = datetime.date.today()
+current_year = today.year
+current_quarter = (today.month - 1) // 3 + 1  # 1~12월 → 1~4분기 변환
+
+# GitHub에서 최신 end_date 가져오기
+new_end_date = fetch_github_end_date(f"{current_year}-Q{current_quarter}")
+
+# 분기가 바뀌면 자동 업데이트
+if new_end_date and ("end_date" not in st.session_state or st.session_state["end_date"] != new_end_date):
+    st.session_state["end_date"] = new_end_date
+    st.cache_data.clear()
+    st.rerun()
+
+# 최종 end_date 값
+end_date = st.session_state["end_date"]
+
 # GitHub 저장소에 업로드된 폰트 파일 경로 설정
 font_path = os.path.join(os.path.dirname(__file__), 'NanumGothic.ttf')
 fontprop = fm.FontProperties(fname=font_path, size=10)
@@ -14,8 +43,7 @@ fontprop = fm.FontProperties(fname=font_path, size=10)
 def fetch_population_data():
     regions = ["41250", "41630", "41650", "41800", "41820", "41150", "41280", "41310", "41360", "41480"]
     start_date = '200801'
-    end_date = '202408'
-    monthly_list = pd.date_range(start="2008-01", end="2024-08", freq='M').strftime('%Y%m').tolist()
+    monthly_list = pd.date_range(start="2008-01", end=end_date, freq='M').strftime('%Y%m').tolist()
     filtered_monthly_list = [month for month in monthly_list if month.endswith('01') and (int(month[:4]) - 2008) % 5 == 0]
 
     all_data = []
