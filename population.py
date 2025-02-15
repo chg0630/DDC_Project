@@ -15,8 +15,8 @@ fontprop = fm.FontProperties(fname=font_path, size=10)
 def fetch_population_data():
     regions = ["41250"]
     start_date = '200801'
-    end_date = '202408'
-    monthly_list = pd.date_range(start="2008-01", end="2024-08", freq='M').strftime('%Y%m').tolist()
+    end_date = '202501'
+    monthly_list = pd.date_range(start="2008-01", end="2025-01", freq='M').strftime('%Y%m').tolist()
     filtered_monthly_list = [month for month in monthly_list if month.endswith('01') and (int(month[:4]) - 2008) % 5 == 0]
 
     all_data = []
@@ -78,9 +78,14 @@ st.write("KOSIS 데이터를 활용하여 특정 지역의 인구 변화를 시�
 regions = df_filtered['시군구'].unique()
 selected_region = st.selectbox("시각화할 지역을 선택하세요:", regions)
 
-if "cache_cleared" not in st.session_state:
+# if "cache_cleared" not in st.session_state:
+#     st.cache_data.clear()
+#     st.session_state["cache_cleared"] = True
+
+# 버튼 클릭 시 캐시 삭제 및 페이지 새로고침
+if st.button("🔄 캐시 초기화 및 새로고침"):
     st.cache_data.clear()
-    st.session_state["cache_cleared"] = True
+    st.rerun()
 
 fig1, ax1 = plt.subplots(figsize=(10, 6))
 
