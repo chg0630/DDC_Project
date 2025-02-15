@@ -14,9 +14,9 @@ GITHUB_RAW_URL = "https://raw.githubusercontent.com/chg0630/DDC_Project/main/pop
 def fetch_github_end_date(current_quarter):
     response = requests.get(GITHUB_RAW_URL)
     if response.status_code == 200:
-        match = re.search(r'end_date\s*=\s*(["'])(\d+)', response.text)
+        match = re.search(r'end_date\s*=\s*(["'])(\d+)\1', response.text)
         if match:
-            return match.group(2)  # ✅ 숫자(2501 같은 값)만 반환
+            return match.group(1)  # ✅ 숫자(2501 같은 값)만 반환
     return None
 
 # 현재 연도와 분기 계산
