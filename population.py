@@ -41,7 +41,7 @@ font_path = os.path.join(os.path.dirname(__file__), 'NanumGothic.ttf')
 fontprop = fm.FontProperties(fname=font_path, size=10)
 
 @st.cache_data
-def fetch_population_data():
+def fetch_population_data(end_date):
     regions = ["41250", "41630", "41650", "41800", "41820", "41150", "41280", "41310", "41360", "41480"]
     start_date = '200801'
     monthly_list = pd.date_range(start="2008-01", end=end_date, freq='M').strftime('%Y%m').tolist()
